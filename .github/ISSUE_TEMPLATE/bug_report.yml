@@ -1,0 +1,48 @@
+name: Bug report
+description: Something converts wrongly, fails, or the app misbehaves
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: input
+    id: conversion
+    attributes:
+      label: Conversion or tool
+      placeholder: e.g. MP4 → WebM, or PDF → Organize
+  - type: textarea
+    id: error
+    attributes:
+      label: Error text
+      description: Copy the message from the progress panel, or run the conversion headlessly with `Dropwheel --convert <file> <target>` and paste the output.
+      render: text
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version and Mac model
+      placeholder: e.g. macOS 15.6, MacBook Air M2
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Dropwheel version
+      placeholder: e.g. 1.0.0, or commit hash if built from source
+    validations:
+      required: true
+  - type: textarea
+    id: ffmpeg
+    attributes:
+      label: ffmpeg version (audio/video issues only)
+      description: Output of `ffmpeg -version`
+      render: text
+  - type: checkboxes
+    id: sample
+    attributes:
+      label: Sample file
+      options:
+        - label: I can attach or share a file that reproduces this (please make sure it contains nothing private).

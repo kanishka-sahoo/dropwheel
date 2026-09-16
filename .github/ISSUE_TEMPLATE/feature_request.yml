@@ -1,0 +1,19 @@
+name: Feature request
+description: Suggest a new conversion, tool or improvement
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would you like to do that you can't today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: For a new format, say which direction(s) and whether a system framework or ffmpeg can produce it. Remember that Dropwheel must work fully offline.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered

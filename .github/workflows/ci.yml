@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    name: Build (macOS)
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show toolchain
+        run: |
+          sw_vers
+          swift --version
+
+      - name: Cache SwiftPM build
+        uses: actions/cache@v4
+        with:
+          path: .build
+          key: spm-${{ runner.os }}-${{ hashFiles('Package.swift', 'Sources/**/*.swift') }}
+          restore-keys: spm-${{ runner.os }}-
+
+      - name: Build (release)
+        run: swift build -c release
+
+      - name: Assemble app bundle
+        run: ./scripts/build_app.sh release
+
+      - name: Headless smoke test
+        run: |
+          mkdir -p /tmp/dwfix
+          printf 'Hello from Dropwheel CI\nSecond line\n' > /tmp/dwfix/notes.txt
+          BIN="$(swift build -c release --show-bin-path)/Dropwheel"
+          cd /tmp/dwfix
+          "$BIN" --convert notes.txt pdf
+          "$BIN" --convert notes.txt png
+          "$BIN" --convert notes.txt docx
+          ls -la
+
+      - name: Upload app bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dropwheel.app
+          path: build/Dropwheel.app
+          if-no-files-found: error
